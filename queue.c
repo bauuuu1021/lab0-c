@@ -129,8 +129,12 @@ bool q_remove_head(queue_t *q, char *sp, size_t bufsize)
         return false;
 
     list_ele_t *tmp = q->head;
-    memset(sp, 0, bufsize);
-    strncpy(sp, tmp->value, bufsize - 1);
+
+    if (sp) {
+        memset(sp, 0, bufsize);
+        strncpy(sp, tmp->value, bufsize - 1);
+    }
+
     q->head = q->head->next;
     q->size -= 1;
     free(tmp);
@@ -146,7 +150,7 @@ int q_size(queue_t *q)
 {
     /* You need to write the code for this function */
     /* Remember: It should operate in O(1) time */
-    return q->size;
+    return (q) ? q->size : 0;
 }
 
 /*
@@ -158,6 +162,9 @@ int q_size(queue_t *q)
  */
 void q_reverse(queue_t *q)
 {
+    if (!q)
+        return;
+
     /* You need to write the code for this function */
     list_ele_t *newTail = q->head;
     list_ele_t *prev = NULL, *cur = q->head, *tmp;
