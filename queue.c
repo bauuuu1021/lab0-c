@@ -39,6 +39,15 @@ void q_free(queue_t *q)
 {
     /* How about freeing the list elements and the strings? */
     /* Free queue structure */
+    if (!q)
+        return;
+
+    list_ele_t *tmp, *cur = q->head;
+    while (cur) {
+        tmp = cur;
+        cur = cur->next;
+        free(tmp);
+    }
     free(q);
 }
 
@@ -150,4 +159,16 @@ int q_size(queue_t *q)
 void q_reverse(queue_t *q)
 {
     /* You need to write the code for this function */
+    list_ele_t *newTail = q->head;
+    list_ele_t *prev = NULL, *cur = q->head, *tmp;
+
+    while (cur) {
+        tmp = cur->next;
+        cur->next = prev;
+        prev = cur;
+        cur = tmp;
+    }
+
+    q->head = prev;
+    q->tail = newTail;
 }
